@@ -8,9 +8,7 @@ import { parse as parseArgs } from "https://deno.land/std@0.88.0/flags/mod.ts";
 const { stdin, args, exit } = Deno;
 
 const helptext = () => {
-  console.log(`ecotaxa-occurrences
-
- Converts EcoTaxa NDJSON to Darwin Core Occurrencess
+  console.log(`Converts EcoTaxa NDJSON to Darwin Core Occurrences NDJSON
 
 Use:
   cat ecotaxa.ndjson | ecotaxa-occurrences --project number
