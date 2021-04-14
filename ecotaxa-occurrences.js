@@ -22,10 +22,11 @@ Options
   exit(0);
 };
 
-const ignoreFactory = (args) => (line, i) =>
-  args["not-living"]
-    ? line.length === 0
-    : line.length === 0 || /not-living/.test(line);
+const ignoreFactory = (args) =>
+  (line, i) =>
+    args["not-living"]
+      ? line.length === 0
+      : line.length === 0 || /not-living/.test(line);
 
 const occurrences = async (args) => {
   try {

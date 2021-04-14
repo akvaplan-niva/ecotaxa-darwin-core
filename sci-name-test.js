@@ -11,9 +11,13 @@ import {
 const mollusca_veliger =
   "living>Eukaryota>Opisthokonta>Holozoa>Metazoa>Mollusca>veliger";
 
-const mollusca_veliger_space = mollusca_veliger.replace(/>/g, " ");
-
 test("extractScientificName", () => {
+  assertEquals(
+    extractScientificName(
+      "living>Eukaryota>Opisthokonta>Holozoa>Metazoa>Arthropoda>Crustacea>Maxillopoda>Copepoda>Siphonostomatoida>Lepeophtheirus>Lepeophtheirus salmonis",
+    ),
+    "Lepeophtheirus salmonis",
+  );
   assertEquals(
     extractScientificName(
       "living>Eukaryota>Harosa>Alveolata>Myzozoa>Holodinophyta>Dinophyceae>Gonyaulacales>Ceratiaceae>Ceratium>Ceratium sp.",
@@ -28,7 +32,6 @@ test("extractScientificName", () => {
     "Calanus finmarchicus",
   );
   assertEquals(extractScientificName(mollusca_veliger), "Mollusca");
-  assertEquals(extractScientificName(mollusca_veliger_space), "Mollusca");
   assertEquals(extractScientificName("Copepoda>multiple"), "Copepoda");
   assertEquals(
     extractScientificName(
@@ -55,13 +58,13 @@ test("extractIdentificatinRemarks", () => {
 
 test("extractLifestage [zoea, veliger, etc.]", () => {
   assertEquals(extractLifestage(mollusca_veliger), "veliger");
-  assertEquals(extractLifestage(mollusca_veliger_space), "veliger");
 });
 
 test("Calanus finmarchicus is species", () => {
   assertEquals(isSpecies("Calanus finmarchicus"), true);
 });
 
-test("Calanus is not species", () => {
+test("Calanus [sp.] is not species", () => {
   assertEquals(isSpecies("Calanus"), false);
+  assertEquals(isSpecies("Calanus sp."), false);
 });

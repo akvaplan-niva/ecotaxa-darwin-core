@@ -47,7 +47,7 @@ export const extractScientificName = (h /* object_annotation_hierarchy*/) => {
 
 export const extractLifestage = (
   h,
-  lifestages = ["egg", "nauplii", "part", "veliger", "zoea"]
+  lifestages = ["egg", "nauplii", "part", "veliger", "zoea"],
 ) => {
   const cand = split(h).pop();
   const l = lifestages.find((l) => cand === l);

@@ -1,13 +1,15 @@
 # ecotaxa-darwin-core
 
-[Deno](https://deno.land) command-line tools for creating [Darwin Core](https://dwc.tdwg.org/terms/) records from [EcoTaxa](https://ecotaxa.obs-vlfr.fr/) exports.
+[Deno](https://deno.land) command-line tools for creating
+[Darwin Core](https://dwc.tdwg.org/terms/) records from
+[EcoTaxa](https://ecotaxa.obs-vlfr.fr/) exports.
 
 ## ecotaxa-occurrences
 
 ```sh
 $ ecotaxa-occurrences -h
 
- Converts EcoTaxa NDJSON to Darwin Core Occurrencess
+ Converts EcoTaxa NDJSON to Darwin Core Occurrences NDJSON
 
 Use:
   ecotaxa-occurrences --project number < ecotaxa.ndjson

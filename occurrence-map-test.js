@@ -51,7 +51,7 @@ test(`occurrence map yields { "scientificName: "Calanus", "occurrenceStatus": "p
 test(`dynamicProperties`, () => {
   const dynamicProperties = (rest, dwc) =>
     Object.fromEntries(
-      Object.entries(rest).filter(([k, v]) => /^img_/.test(k))
+      Object.entries(rest).filter(([k, v]) => /^img_/.test(k)),
     );
 
   const mapperfx = occurrenceMapFactory({
