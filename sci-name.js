@@ -3,7 +3,7 @@ const isScientificName = (s, re = /[A-Z][a-z\s]+/) => re.test(s);
 export const isSpecies = (s, re = /^[A-Z][a-z]+\s[a-z]+(\s[a-z]+)?$/) =>
   re.test(s);
 
-const split = (s, re = /[\>\s\<]{1}/g) => [...String(s).split(re)];
+const split = (s, re = /[\>\<]{1}/g) => [...String(s).split(re)];
 
 export const extractIdentificationRemarks = (h) => h.trim();
 
@@ -15,15 +15,26 @@ export const extractIdentificationQualifier = (h) => {
 };
 
 export const extractScientificName = (h /* object_annotation_hierarchy*/) => {
-  // if (!h) {
-  //   return;
-  // }
-  // h = h.trim();
+  if (!h) {
+    return;
+  }
+  h = h.trim();
   if (isSpecies(h)) {
     return h;
   }
-  const parts = split(h);
+  const lifestage = extractLifestage(h);
+  if (lifestage) {
+    h = h.replace(lifestage, "").trim();
+  }
+  const iqual = extractIdentificationQualifier(h);
+  if (iqual) {
+    h = h.replace(iqual, "").trim();
+  }
+  h = h.replace(/ X$/, "");
+  const parts = [...new Set(split(h))];
+
   const cand = parts.pop();
+
   if (isScientificName(cand)) {
     return cand;
   }
