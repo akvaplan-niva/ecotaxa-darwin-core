@@ -8,16 +8,18 @@
 
 ```sh
 $ ecotaxa-occurrences -h
-
- Converts EcoTaxa to Darwin Core Occurrences
+Converts EcoTaxa data to Darwin Core Occurrences
 
 Use:
-  ecotaxa-occurrences --project number [OPTIONS] < INPUT
+  ecotaxa-occurrences --project {number} [OPTIONS] < INPUT
 
 Options
-  --project     EcoTaxa project number (integer)
-  --country     Set country code
-  --not-living  Also include records classified as not-living
+  --project             EcoTaxa project number (integer)
+  --dataset-id
+  --country             Set country code
+  --not-living          Also include records classified as not-living
+  --dynamic-properties  Store all unknown variables in dynamicProperties
+  --from                Set input format [ tsv | ndjson ]
 ```
 
 ![Calanoida](3717.jpg)

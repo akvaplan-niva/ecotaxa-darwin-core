@@ -11,19 +11,18 @@ import { alias } from "./alias.js";
 const { stdin, args, exit } = Deno;
 
 const helptext = () => {
-  console.log(`Convert EcoTaxa data to Darwin Core Occurrences
+  console.log(`Converts EcoTaxa data to Darwin Core Occurrences
 
 Use:
   ecotaxa-occurrences --project {number} [OPTIONS] < INPUT
 
 Options
   --project             EcoTaxa project number (integer)
-  --dataset-id          
+  --dataset-id
   --country             Set country code
   --not-living          Also include records classified as not-living
   --dynamic-properties  Store all unknown variables in dynamicProperties
   --from                Set input format [ tsv | ndjson ]
-
 `);
   exit(0);
 };
