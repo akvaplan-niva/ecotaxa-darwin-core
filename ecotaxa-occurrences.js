@@ -18,12 +18,11 @@ Use:
 
 Options
   --project             EcoTaxa project number (integer)
-  --dataset-id          
+  --dataset-id
   --country             Set country code
   --not-living          Also include records classified as not-living
   --dynamic-properties  Store all unknown variables in dynamicProperties
   --from                Set input format [ tsv | ndjson ]
-
 `);
   exit(0);
 };
