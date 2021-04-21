@@ -209,7 +209,7 @@ test(`dynamicProperties`, () => {
 test(`dynamicProperties (function)`, () => {
   const dynamicProperties = (rest, dwc) =>
     Object.fromEntries(
-      Object.entries(rest).filter(([k, v]) => /^img_/.test(k))
+      Object.entries(rest).filter(([k, v]) => /^img_/.test(k)),
     );
 
   const mapperfx = occurrenceMapFactory({

@@ -1,8 +1,8 @@
 import {
-  ndmapcommand,
+  commonOptions,
   csvgenerator,
   jsongenerator,
-  commonOptions,
+  ndmapcommand,
   parseArgs,
 } from "./deps.js";
 import { occurrenceMapFactory } from "./occurrence-map.js";
@@ -28,10 +28,11 @@ Options
   exit(0);
 };
 
-const ignoreFactory = (args) => (line, i) =>
-  args["not-living"]
-    ? line.length === 0
-    : line.length === 0 || /not-living/.test(line);
+const ignoreFactory = (args) =>
+  (line, i) =>
+    args["not-living"]
+      ? line.length === 0
+      : line.length === 0 || /not-living/.test(line);
 
 const ecotaxaOccurrencesCommand = async (args) => {
   const mapfx = occurrenceMapFactory(args);
