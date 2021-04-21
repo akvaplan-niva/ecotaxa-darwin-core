@@ -1,4 +1,4 @@
-import { generate } from "https://deno.land/std@0.87.0/uuid/v5.ts";
+import { generate } from "./deps.js";
 
 export const ECOTAXA_URL = "https://ecotaxa.obs-vlfr.fr";
 export const ECOTAXA_NAMESPACE = "7b6c779d-4de2-5860-8b14-bef66d7114c2";
