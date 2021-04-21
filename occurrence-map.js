@@ -7,7 +7,7 @@ import {
   uuidv5,
 } from "./id.js";
 import { extractDate } from "./event-date.js";
-import { extractLifestage, extractScientificName } from "./sci-name.js";
+import { extractLifestage, extractScientificName, extractIdentificationQualifier } from "./sci-name.js";
 
 const { fromEntries, entries } = Object;
 
@@ -20,8 +20,10 @@ export const occurrenceMapFactory = ({
   coordinatePrecision = 0.00001,
   dynamicProperties = false,
   basisOfRecord = "MachineObservation",
+  sampleSizeUnit = "m3",
   project, //EcoTaxa project number
   debug,
+  temporaryMap,
 } = {}) => ({
   object_id,
   object_annotation_hierarchy,
@@ -49,7 +51,15 @@ export const occurrenceMapFactory = ({
   if (!datasetID && !project) {
     throw "Missing datasetID or EcoTaxa project number";
   }
+  // @todo use higherClassification instead of identificationRemarks if scientificName is not empty (or if "Eukaryota"?)
+  const identificationRemarks = object_annotation_hierarchy;
+
+  const temporary = (temporaryMap && temporaryMap.size && /^temporary/.test(object_annotation_hierarchy))
+    ? temporaryMap.get(object_annotation_hierarchy) ?? {}
+    : {}
+    ;
   const scientificName = extractScientificName(object_annotation_hierarchy);
+  const identificationQualifier = extractIdentificationQualifier(object_annotation_hierarchy);
   const lifeStage = extractLifestage(object_annotation_hierarchy);
 
   // 1:1 mapping
@@ -74,7 +84,10 @@ export const occurrenceMapFactory = ({
     max: new Date(dateIdentified ?? undefined),
   });
 
-  const samplingProtocol = `${sample_net_type}`;
+  const samplingProtocol = sample_net_type ? `${sample_net_type}` : undefined;
+  let samplingEffort = sample_net_mesh
+    ? `${sample_net_mesh || "?"} µm mesh${sample_ship ? `` : ""}`
+    : undefined;
 
   // IDs
   // DatasetID from EcoTaxa project number
@@ -103,18 +116,23 @@ export const occurrenceMapFactory = ({
     : ECOTAXA_URL;
   const associatedMedia = img_file_name;
 
-  let samplingEffort = `${sample_net_type} mesh size ${
-    sample_net_mesh || "?"
-  } from ${sample_ship || ""}`;
+  const eventRemarks = sample_comment !== "no" ? sample_comment : undefined;
 
-  const identificationRemarks = object_annotation_hierarchy;
+  const sampleSizeValue = sample_tot_vol;
+
+  const occurrenceStatus = scientificName || temporary.scientificName ? "present" : undefined;
+
+  const organismQuantity = /(multiple|temporary)/.test(identificationRemarks) ? null : 1;
+  const organismQuantityType = /(multiple|temporary)/.test(identificationRemarks) ? "multiple" : "individuals";
+  //const organismRemarks = undefined;
 
   const occurrence = {
     scientificName,
+
     lifeStage,
-    organismQuantity: 1,
-    organismQuantityType: "individuals",
-    occurrenceStatus: scientificName ? "present" : undefined,
+    organismQuantity,
+    organismQuantityType,
+    occurrenceStatus,
     eventDate,
     fieldNumber,
     catalogNumber,
@@ -126,7 +144,9 @@ export const occurrenceMapFactory = ({
     maximumDepthInMeters,
     minimumDepthInMeters,
     samplingProtocol,
-    eventRemarks: sample_comment !== "no" ? sample_comment : undefined,
+    eventRemarks,
+    sampleSizeValue,
+    sampleSizeUnit,
     samplingEffort,
     occurrenceID,
     datasetID,
@@ -135,7 +155,7 @@ export const occurrenceMapFactory = ({
     countryCode,
     geodeticDatum:
       decimalLongitude && decimalLatitude ? geodeticDatum : undefined,
-    coordinateUncertaintyInMeters: decimalLongitude
+    coordinateUncertaintyInMeters: decimalLongitude && decimalLatitude
       ? coordinateUncertaintyInMeters
       : undefined,
     dateIdentified,
@@ -144,15 +164,10 @@ export const occurrenceMapFactory = ({
     datasetName,
     identifiedBy,
     associatedMedia,
-    // @todo identificationQualifier,
-    // @todo sampleSizeValue: sample_tot_vol,
-    // @todo sampleSizeUnit: ml?
-    // @todo footprintWKT
-    // @todo footprintSRS
-    // @todo countryCode: if fx call countryCode([decimalLongitude,decimalLatitude])
-    // @todo use higherClassification instead of identificationRemarks if scientificName is not empty (or if "Eukaryota"?)
+    //organismRemarks,
+    ...temporary
   };
-  console.warn({ dynamicProperties });
+
   if (dynamicProperties !== false) {
     if ("function" === typeof dynamicProperties) {
       occurrence.dynamicProperties =
