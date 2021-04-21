@@ -9,10 +9,10 @@
 ```sh
 $ ecotaxa-occurrences -h
 
- Converts EcoTaxa NDJSON to Darwin Core Occurrences NDJSON
+ Converts EcoTaxa to Darwin Core Occurrences
 
 Use:
-  ecotaxa-occurrences --project number < ecotaxa.ndjson
+  ecotaxa-occurrences --project number [OPTIONS] < INPUT
 
 Options
   --project     EcoTaxa project number (integer)

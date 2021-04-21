@@ -28,6 +28,3 @@ export const occurrenceUUIDv5 = ({ catalogNumber, datasetID }) =>
 
 export const eventUUIDv5 = ({ fieldNumber, datasetID, parentEventID }) =>
   uuidv5({ name: fieldNumber, namespace: parentEventID ?? datasetID });
-
-// export const occurrenceUUIDv5 = ({ parentEventID, fieldNumber }) =>
-//   uuidv5({ value: fieldNumber, namespace: parentEventID });
